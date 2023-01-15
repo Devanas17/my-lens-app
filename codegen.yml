@@ -1,5 +1,5 @@
 # 1. Schema - where is the graphQl schema located
-schema: "https://api.lens.dev/"
+schema: "https://api-mumbai.lens.dev/"
 # 2. Documents - What path are the graphQl operations located.
 #  Our documents are located at /src/graphql
 
