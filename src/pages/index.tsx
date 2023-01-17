@@ -14,7 +14,7 @@ export default function Home() {
       request: {
         sortCriteria: PublicationSortCriteria.Latest,
       },
-    },
+    }, 
     {
       // Don't refetch the user comes back
       refetchOnWindowFocus: false,

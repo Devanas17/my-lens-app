@@ -3,14 +3,18 @@ import styles from "../../styles/Profile.module.css";
 import { useRouter } from "next/router";
 import { MediaRenderer, Web3Button } from "@thirdweb-dev/react";
 import FeedPost from "../../components/FeedPost";
-
+import {
+  LENS_CONTRACT_ABI,
+  LENS_CONTRACT_ADDRESS,
+} from "../../const/contracts";
+import { useFollow } from "../../lib/useFollow";
 
 type Props = {};
 
 export default function ProfilePage({}: Props) {
   const router = useRouter();
   const { id } = router.query;
-
+  const { mutateAsync: followUser } = useFollow();
 
   const {
     isLoading: loadingProfile,
@@ -26,7 +30,7 @@ export default function ProfilePage({}: Props) {
       enabled: !!id,
     }
   );
- 
+
   const {
     isLoading: isLoadingPublications,
     data: publicationsData,
@@ -41,7 +45,12 @@ export default function ProfilePage({}: Props) {
       enabled: !!profileData?.profile?.id,
     }
   );
-  console.log(profileData, loadingProfile, isLoadingPublications, publicationsData)
+  console.log(
+    profileData,
+    loadingProfile,
+    isLoadingPublications,
+    publicationsData
+  );
 
   if (publicationsError || profileError) {
     return <div>Could not find this profile.</div>;
@@ -54,7 +63,7 @@ export default function ProfilePage({}: Props) {
   return (
     <div className={styles.profileContainer}>
       <div className={styles.profileContentContainer}>
-         {/* Cover Image */}
+        {/* Cover Image */}
         {/* @ts-ignore */}
         {profileData?.profile?.coverPicture?.original?.url && (
           <MediaRenderer
@@ -67,7 +76,7 @@ export default function ProfilePage({}: Props) {
           />
         )}
 
-         {/* Profile Picture */}
+        {/* Profile Picture */}
         {/* @ts-ignore */}
         {profileData?.profile?.picture?.original?.url && (
           <MediaRenderer
@@ -94,7 +103,13 @@ export default function ProfilePage({}: Props) {
           {profileData?.profile?.stats.totalFollowers} {" Followers"}
         </p>
 
-        {/* <Web3Button>Follow</Web3Button> */}
+        <Web3Button
+          contractAddress={LENS_CONTRACT_ADDRESS}
+          contractAbi={LENS_CONTRACT_ABI}
+          action={async () => await followUser(profileData?.profile?.id)}
+        >
+          Follow User
+        </Web3Button>
 
         <div className={styles.publicationsContainer}>
           {isLoadingPublications ? (
@@ -108,5 +123,5 @@ export default function ProfilePage({}: Props) {
         </div>
       </div>
     </div>
-  ); 
+  );
 }
