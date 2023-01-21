@@ -8,8 +8,8 @@
     top: 0;
     left: 0;
     width: 100%;
-    background-color: darkslategray;
-    border-bottom: 1px solid white;
+    background-color: white;
+    box-shadow: 2px 4px 5px black;
     z-index: 99999;
     margin-bottom: 20px;
   }
